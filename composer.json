@@ -1,0 +1,24 @@
+{
+    "name": "octamp/server",
+    "description": "Octamp Server",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Octamp\\Server\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cydrick Nonog",
+            "email": "cydrick.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "openswoole/core": "22.1.5",
+        "predis/predis": "^2.2"
+    },
+    "require-dev": {
+        "openswoole/ide-helper": "^22.1"
+    }
+}
