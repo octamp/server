@@ -198,4 +198,9 @@ class Server implements ServerInterface
     {
         $this->adapter = $adapter;
     }
+
+    public function closeConnection(Connection $connection): void
+    {
+        $this->server->close($connection->getFd());
+    }
 }

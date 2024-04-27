@@ -2,6 +2,8 @@
 
 namespace Octamp\Server;
 
+use Octamp\Server\Connection\Connection;
+
 class DummyServer implements ServerInterface
 {
     public function __construct(public readonly string $serverId, private ServerInterface $server)
@@ -25,5 +27,10 @@ class DummyServer implements ServerInterface
     public function pong(int $fd, ?string $data = null): void
     {
         // TODO: Implement pong() method.
+    }
+
+    public function closeConnection(Connection $connection): void
+    {
+        // TODO: Implement closeConnection() method.
     }
 }

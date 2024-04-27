@@ -58,7 +58,7 @@ class Connection
 
     public function close(): void
     {
-        // TODO: Implement close() method.
+        $this->server->closeConnection($this);
     }
 
     public function ping(?string $data = null): void
