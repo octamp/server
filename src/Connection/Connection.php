@@ -56,9 +56,14 @@ class Connection
         $this->server->sendMessage($this->getServerId(), $this->getFd(), $message);
     }
 
-    public function close()
+    public function close(): void
     {
         // TODO: Implement close() method.
+    }
+
+    public function ping(?string $data): void
+    {
+        $this->server->ping($this->getFd(), $data);
     }
 
     public function getRequest(): Request

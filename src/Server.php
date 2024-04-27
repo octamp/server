@@ -142,6 +142,15 @@ class Server implements ServerInterface
         }
     }
 
+    public function ping(int $fd, ?string $data): void
+    {
+        $frame = new Frame();
+        $frame->opcode = WebsocketServer::WEBSOCKET_OPCODE_PING;
+        $frame->data = $data;
+
+        $this->server->push($fd, $frame);
+    }
+
     public function getServerId(): string
     {
         return $this->serverId;
