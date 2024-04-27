@@ -17,4 +17,8 @@ class DummyServer implements ServerInterface
     {
         $this->server->sendMessage($serverId, $fd, $data);
     }
+
+    public function ping(int $fd, ?string $data = null): void
+    {
+    }
 }

@@ -142,7 +142,7 @@ class Server implements ServerInterface
         }
     }
 
-    public function ping(int $fd, ?string $data): void
+    public function ping(int $fd, ?string $data = null): void
     {
         $frame = new Frame();
         $frame->opcode = WebsocketServer::WEBSOCKET_OPCODE_PING;

@@ -61,7 +61,7 @@ class Connection
         // TODO: Implement close() method.
     }
 
-    public function ping(?string $data): void
+    public function ping(?string $data = null): void
     {
         $this->server->ping($this->getFd(), $data);
     }
