@@ -9,4 +9,6 @@ interface ServerInterface
     public function sendMessage(string $serverId, int $fd, ?string $data = null): void;
 
     public function ping(int $fd, ?string $data = null): void;
+
+    public function pong(int $fd, ?string $data = null): void;
 }

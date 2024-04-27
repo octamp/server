@@ -21,4 +21,9 @@ class DummyServer implements ServerInterface
     public function ping(int $fd, ?string $data = null): void
     {
     }
+
+    public function pong(int $fd, ?string $data = null): void
+    {
+        // TODO: Implement pong() method.
+    }
 }

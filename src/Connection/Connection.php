@@ -66,6 +66,11 @@ class Connection
         $this->server->ping($this->getFd(), $data);
     }
 
+    public function pong(?string $data = null): void
+    {
+        $this->server->pong($this->getFd(), $data);
+    }
+
     public function getRequest(): Request
     {
         return $this->request;
