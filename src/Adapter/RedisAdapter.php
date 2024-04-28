@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server\Adapter;
 
@@ -172,5 +173,18 @@ class RedisAdapter implements AdapterInterface
         }
 
         return $data;
+    }
+
+    public function inc(string $key, int $increment = 1, ?string $field = null): int
+    {
+        $client = $this->createPredis();
+        if ($field !== null) {
+            $value = $client->hincrby($key, $field, $increment);
+        } else {
+            $value = $client->incrby($key, $increment);
+        }
+        $client->quit();
+
+        return $value;
     }
 }

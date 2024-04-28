@@ -16,7 +16,8 @@
     ],
     "require": {
         "openswoole/core": "22.1.5",
-        "predis/predis": "^2.2"
+        "predis/predis": "^2.2",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "openswoole/ide-helper": "^22.1"

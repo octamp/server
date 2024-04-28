@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server;
 
 use Octamp\Server\Connection\Connection;
+use Octamp\Server\Generator\IDGeneratorInterface;
+use Octamp\Server\Generator\ServerIdGeneratorInterface;
 
 class DummyServer implements ServerInterface
 {
@@ -32,5 +35,15 @@ class DummyServer implements ServerInterface
     public function closeConnection(Connection $connection): void
     {
         // TODO: Implement closeConnection() method.
+    }
+
+    public function getGenerator(): ?ServerIdGeneratorInterface
+    {
+        // TODO: Implement getGenerator() method.
+    }
+
+    public function setGenerator(ServerIdGeneratorInterface $generator): void
+    {
+        // TODO: Implement setGenerator() method.
     }
 }

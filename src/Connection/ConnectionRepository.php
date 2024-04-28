@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server\Connection;
 
@@ -58,8 +59,7 @@ class ConnectionRepository
         $results = [];
 
         foreach ($ids as $id) {
-            [$serverId, $fd] = explode(':', $id);
-            $results[$id] = ['serverId' => $serverId, 'fd' => (int) $fd];
+            $results[$id] = Connection::getIdPart($id);
         }
 
         return $results;

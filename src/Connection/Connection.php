@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server\Connection;
 
@@ -10,6 +11,8 @@ use Octamp\Server\Server;
 
 class Connection
 {
+    protected string $id;
+
     public static function createFromArray(
         #[ArrayShape([
             'id' => 'string',
@@ -37,9 +40,21 @@ class Connection
         return new static($request, $connectionServer);
     }
 
-    public function __construct(public readonly Request $request, private readonly ServerInterface $server)
+    public static function generateId(string $serverId, int $fd): string
     {
-        // Noting to implement
+        return $serverId . ':' . $fd;
+    }
+
+    public static function getIdPart(string $id): array
+    {
+        [$serverId, $fd] = explode(':' , $id);
+
+        return ['serverId' => $serverId, 'fd' => (int) $fd];
+    }
+
+    public function __construct(public readonly Request $request, private readonly ServerInterface $server, ?string $id = null)
+    {
+        $this->id = $id ?? static::generateId($this->server->getServerId(), $this->request->fd);
     }
 
     public function getFd(): int
@@ -78,7 +93,7 @@ class Connection
 
     public function getId(): string
     {
-        return $this->server->getServerId() . ':' . $this->getFd();
+        return $this->id;
     }
 
     public function getServerId(): string

@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server;
-
 
 use Octamp\Server\Adapter\AdapterInterface;
 use Octamp\Server\Connection\Connection;
 use Octamp\Server\Connection\ConnectionStorage;
+use Octamp\Server\Generator\DefaultIDGenerator;
+use Octamp\Server\Generator\IDGeneratorInterface;
+use Octamp\Server\Generator\ServerIdGeneratorInterface;
 use OpenSwoole\Constant;
 use OpenSwoole\Http\Request;
 use OpenSwoole\WebSocket\Frame;
@@ -17,6 +20,8 @@ class Server implements ServerInterface
     private ?AdapterInterface $adapter = null;
     protected array $callbacks = [];
     protected ?ConnectionStorage $connectionStorage = null;
+
+    protected ?ServerIdGeneratorInterface $idGenerator = null;
 
     protected bool $ready = false;
 
@@ -74,8 +79,13 @@ class Server implements ServerInterface
 
         $this->dispatch('beforeStart');
         if ($this->serverId === null) {
-            $this->serverId = uniqid('', true) . '-' . $this->server->worker_id;
+            if ($this->idGenerator === null) {
+                $this->setGenerator(new DefaultIDGenerator());
+            }
+            $this->serverId = $this->idGenerator->generateServerId($this->server->worker_id);
         }
+
+        echo 'Server Worker ID: ' . $this->serverId . PHP_EOL;
 
         if ($this->adapter === null) {
             $this->server->stop($this->server->worker_id);
@@ -202,5 +212,15 @@ class Server implements ServerInterface
     public function closeConnection(Connection $connection): void
     {
         $this->server->close($connection->getFd());
+    }
+
+    public function setGenerator(ServerIdGeneratorInterface $generator): void
+    {
+        $this->idGenerator = $generator;
+    }
+
+    public function getGenerator(): ?ServerIdGeneratorInterface
+    {
+        return $this->idGenerator;
     }
 }

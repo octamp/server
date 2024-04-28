@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server\Adapter;
 
@@ -21,4 +22,6 @@ interface AdapterInterface
     public function find(string $search): array;
 
     public function keys(string $search): array;
+
+    public function inc(string $key, int $increment = 1, ?string $field = null): int;
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Octamp\Server\Connection;
 
@@ -34,7 +35,7 @@ class ConnectionStorage
 
     public function getUsingServerFd(string $serverId, int $fd): ?Connection
     {
-        $id = $serverId . ':' . $fd;
+        $id = Connection::generateId($serverId, $fd);
 
         return $this->get($id);
     }

@@ -11,6 +11,7 @@ $server = new Server($websocket);
 $server->on('beforeStart', function (Server $server) {
     $adapter = new \Octamp\Server\Adapter\RedisAdapter('0.0.0.0', 6379);
     $server->setAdapter($adapter);
+    $server->setGenerator(new \Octamp\Server\Generator\RedisIDGenerator($server, $adapter));
 });
 $server->on('open', function (Server $server, Connection $connection) {
     $connection->send('Welcome');
