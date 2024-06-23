@@ -88,7 +88,9 @@ class RedisAdapter implements AdapterInterface
     public function publish(string $topic, array $payload = [], ?string $serverId = null): void
     {
         $channel = ($serverId ?? 'global') . ':message';
-        $this->publisher->publish($channel, json_encode([$topic, $payload]));
+        $client = $this->createPredis();
+        $client->publish($channel, json_encode([$topic, $payload]));
+        $client->quit();
     }
 
     public function set(string $key, array $data = []): void
