@@ -146,7 +146,9 @@ class Server implements ServerInterface
     public function sendMessage(string $serverId, int $fd, ?string $data = null): void
     {
         if ($serverId === $this->serverId) {
-            $this->server->push($fd, $data);
+            if ($this->server->exists($fd)) {
+                $this->server->push($fd, $data);
+            }
         } else {
             $this->adapter->publish('client:push', [$serverId, $fd, $data], $serverId);
         }
