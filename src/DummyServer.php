@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Octamp\Server;
 
 use Octamp\Server\Connection\Connection;
-use Octamp\Server\Generator\IDGeneratorInterface;
 use Octamp\Server\Generator\ServerIdGeneratorInterface;
 
 class DummyServer implements ServerInterface
@@ -18,9 +17,9 @@ class DummyServer implements ServerInterface
         return $this->serverId;
     }
 
-    public function sendMessage(string $serverId, int $fd, ?string $data = null): void
+    public function sendMessage(string $serverId, int $fd, ?string $data = null, int $opcode = \OpenSwoole\WebSocket\Server::WEBSOCKET_OPCODE_TEXT): void
     {
-        $this->server->sendMessage($serverId, $fd, $data);
+        $this->server->sendMessage($serverId, $fd, $data, $opcode);
     }
 
     public function ping(int $fd, ?string $data = null): void

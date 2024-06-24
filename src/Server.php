@@ -143,11 +143,11 @@ class Server implements ServerInterface
         $this->dispatch('close', $connection);
     }
 
-    public function sendMessage(string $serverId, int $fd, ?string $data = null): void
+    public function sendMessage(string $serverId, int $fd, ?string $data = null, int $opcode = WebsocketServer::WEBSOCKET_OPCODE_TEXT): void
     {
         if ($serverId === $this->serverId) {
             if ($this->server->exists($fd)) {
-                $this->server->push($fd, $data);
+                $this->server->push($fd, $data, $opcode);
             }
         } else {
             $this->adapter->publish('client:push', [$serverId, $fd, $data], $serverId);

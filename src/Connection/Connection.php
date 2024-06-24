@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Octamp\Server\DummyServer;
 use Octamp\Server\ServerInterface;
 use OpenSwoole\Http\Request;
-use Octamp\Server\Server;
+use OpenSwoole\WebSocket\Server;
 
 class Connection
 {
@@ -62,13 +62,13 @@ class Connection
         return $this->request->fd;
     }
 
-    public function send(null|array|string $data): void
+    public function send(null|array|string $data, int $opcode = Server::WEBSOCKET_OPCODE_TEXT): void
     {
         $message = $data;
         if (is_array($data)) {
             $message = json_encode($message);
         }
-        $this->server->sendMessage($this->getServerId(), $this->getFd(), $message);
+        $this->server->sendMessage($this->getServerId(), $this->getFd(), $message, $opcode);
     }
 
     public function close(): void
