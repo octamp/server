@@ -9,24 +9,24 @@ use Predis\PubSub\Consumer;
 
 class RedisAdapter implements AdapterInterface
 {
-    private PredisClient $publisher;
+    protected PredisClient $publisher;
 
-    private PredisClient $subscriber;
+    protected PredisClient $subscriber;
 
-    private ?Consumer $pubSubConsumer = null;
+    protected ?Consumer $pubSubConsumer = null;
 
-    private ?int $subscriberId = null;
+    protected ?int $subscriberId = null;
 
-    private bool $active = false;
+    protected bool $active = false;
 
-    private array $subscribers = [];
+    protected array $subscribers = [];
 
     public function __construct(
-        private readonly string $host,
-        private readonly int $port,
-        private readonly ?string $username = null,
-        private readonly ?string $password= null,
-        private readonly array $options = []
+        protected readonly string $host,
+        protected readonly int $port,
+        protected readonly ?string $username = null,
+        protected readonly ?string $password= null,
+        protected readonly array $options = []
     ) {
         $this->publisher = $this->createPredis();
         $this->subscriber = $this->createPredis();
@@ -175,7 +175,7 @@ class RedisAdapter implements AdapterInterface
         return $keys;
     }
 
-    private function decodeData(array $data): array
+    protected function decodeData(array $data): array
     {
         foreach ($data as &$value) {
             try {
