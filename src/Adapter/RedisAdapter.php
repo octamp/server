@@ -21,19 +21,32 @@ class RedisAdapter implements AdapterInterface
 
     private array $subscribers = [];
 
-    public function __construct(private readonly string $host, private readonly int $port, private readonly array $options = [])
-    {
+    public function __construct(
+        private readonly string $host,
+        private readonly int $port,
+        private readonly ?string $username = null,
+        private readonly ?string $password= null,
+        private readonly array $options = []
+    ) {
         $this->publisher = $this->createPredis();
         $this->subscriber = $this->createPredis();
     }
 
     public function createPredis(?string $host = null, ?int $port = null, ?array $options = null): PredisClient
     {
-        return new PredisClient([
+        $parameters = [
             'host' => $host ?? $this->host,
             'port' => $port ?? $this->port,
             'client_info' => true,
-        ], $options ?? $this->options);
+        ];
+        if ($this->username !== null) {
+            $parameters['username'] = $this->username;
+        }
+        if ($this->password !== null) {
+            $parameters['password'] = $this->password;
+        }
+
+        return new PredisClient($parameters, $options ?? $this->options);
     }
 
     public function start(string $serverId): void
