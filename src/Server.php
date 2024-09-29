@@ -94,7 +94,7 @@ class Server implements ServerInterface
         $this->adapter->start($this->serverId);
         $this->connectionStorage = new ConnectionStorage($this, $this->adapter);
 
-        $this->adapter->subscribe('client:push', function (string $serverId, int $fd, string $data) {
+        $this->adapter->subscribe('client:push', function (?string $fromServerId, string $serverId, int $fd, string $data) {
             if ($this->serverId === $serverId) {
                 $connection = $this->connectionStorage->getUsingServerFd($serverId, $fd);
                 $connection->send($data);
@@ -150,7 +150,7 @@ class Server implements ServerInterface
                 $this->server->push($fd, $data, $opcode);
             }
         } else {
-            $this->adapter->publish('client:push', [$serverId, $fd, $data], $serverId);
+            $this->adapter->publish('client:push', [$serverId, $fd, $data], $serverId, $this->serverId);
         }
     }
 

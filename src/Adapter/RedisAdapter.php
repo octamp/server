@@ -86,11 +86,11 @@ class RedisAdapter implements AdapterInterface
 
     public function onMessage(array $data): void
     {
-        [$topic, $payload] = $data;
+        [$topic, $payload, $fromServerId] = $data;
         if (!isset($this->subscribers[$topic])) {
             return;
         }
-        $this->subscribers[$topic](...$payload);
+        $this->subscribers[$topic]($fromServerId, ...$payload);
     }
 
     public function subscribe(string $topic, callable $callback): void
@@ -98,11 +98,11 @@ class RedisAdapter implements AdapterInterface
         $this->subscribers[$topic] = $callback;
     }
 
-    public function publish(string $topic, array $payload = [], ?string $serverId = null): void
+    public function publish(string $topic, array $payload = [], ?string $serverId = null, ?string $fromServerId = null): void
     {
         $channel = ($serverId ?? 'global') . ':message';
         $client = $this->createPredis();
-        $client->publish($channel, json_encode([$topic, $payload]));
+        $client->publish($channel, json_encode([$topic, $payload, $fromServerId]));
         $client->quit();
     }
 

@@ -11,7 +11,7 @@ interface AdapterInterface
 
     public function subscribe(string $topic, callable $callback): void;
 
-    public function publish(string $topic, array $payload = [], ?string $serverId = null): void;
+    public function publish(string $topic, array $payload = [], ?string $serverId = null, ?string $fromServerId = null): void;
 
     public function set(string $key, array $data = []): void;
 
